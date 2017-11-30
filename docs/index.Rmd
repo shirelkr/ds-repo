@@ -24,10 +24,17 @@ g + geom_point()
 ```
 ### I need colour
 
-```{colour}
+```{r colour}
 g <- ggplot(data = mpg, aes(x=displ, y=hwy, color = class))+ 
   geom_point()
 g
 ```
 
-## Boxplot
+## bw figure
+```{r bw}
+g <- ggplot(data = mpg, aes(x=displ, y=hwy, shape = class))+ 
+  geom_point()
+g
+```
+
+
