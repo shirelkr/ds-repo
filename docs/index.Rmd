@@ -44,3 +44,34 @@ g <- ggplot(data = mpg, aes(x=displ, y=hwy, size = class))+
 g
 ```
 
+## fix colour figure
+```{r fix colour}
+g <- ggplot(data = mpg, aes(x=displ, y=hwy, size = class))+ 
+  geom_point(alpha = 0.2, color = "blue")
+g
+```
+
+## exercise figure
+```{r exercise}
+ggplot(data = mpg, aes(x=displ, y=hwy, color = cty))+ geom_point()
+g
+```
+### violin
+```{r geom_examples}
+ggplot(data=mpg, aes(x=drv, y=hwy)) +
+  geom_violin()
+```
+###multi
+```{r geom_multi}
+ggplot(data=mpg)+
+  geom_point(aes(x=displ,y=hwy))+
+  geom_smooth(aes(x=displ, y=hwy))
+```
+### customize 
+```{r custom}
+ggplot(data=mpg, aes(x=displ,y=hwy))+
+  geom_point()+
+  geom_smooth()+
+  labs(title = "relationship b/w engine size and MPG", x= "Highway MPG", y="Engine displacement")+
+  theme_bw()+
+  theme(text = element_text(size = 16))
