@@ -27,6 +27,7 @@ g + geom_point()
 ```{colour}
 g <- ggplot(data = mpg, aes(x=displ, y=hwy, color = class))+ 
   geom_point()
-
+g
+```
 
 ## Boxplot
