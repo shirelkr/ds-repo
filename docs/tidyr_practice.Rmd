@@ -1,0 +1,117 @@
+---
+title: "TidyR"
+author: "Shirel"
+date: "December 1, 2017"
+output: html_document
+---
+
+```{r}
+library(tidyverse)
+```
+
+## Example datasets
+``` {r}
+AirPassengers
+```
+
+```{r}
+mpg
+```
+
+```{r}
+gap_wide <- readr::read_csv('https://raw.githubusercontent.com/OHI-Science/data-science-training/master/data/gapminder_wide.csv')
+
+gapminder <- readr::read_csv('https://raw.githubusercontent.com/OHI-Science/data-science-training/master/data/gapminder.csv')
+
+head(gap_wide)
+head(gapminder)
+```
+
+## use gather to turn gap_wide into a long dataset
+```{r}
+
+gather()
+
+gap_long <- gap_wide %>% 
+  gather(key = obstype_year,
+         value= obs_values)
+head(gap_long)
+```
+
+```{r}
+gap_long <- gap_wide %>% 
+  gather(key = obstype_year,
+         value= obs_values,
+         dplyr::starts_with("pop"),
+         dplyr::starts_with("lifeExp"),
+         dplyr:: starts_with("gdpPercap"))
+head(gap_long)
+```
+## keep columnns with '-' in gather
+```{r}
+gap_long <- gap_wide %>% 
+  gather(key = obstype_year,
+         value = obs_values,
+         -continent, -country)
+head(gap_long)
+```
+## separate out the year
+```{r}
+gap_long <- gap_wide %>% 
+  gather(key = obstype_year,
+         value = obs_values,
+         -continent, -country) %>% 
+  separate(obstype_year,
+           into = c("obs_type","year"),
+           sep = "_",
+           convert = T)
+head(gap_long)
+```
+
+##plot using ggplot
+```{r}
+life_df <- gap_long %>% 
+  filter(obs_type == "lifeExp",
+         continent == "Americas")
+head(life_df)
+
+ggplot(data=life_df, aes(x=year, y=obs_values, color=country))+geom_line()
+```
+
+
+```{r}
+gap_long %>% 
+  group_by(continent, obs_type) %>% 
+  summarise(means=mean(obs_values))
+
+bycont <- gap_long %>% 
+  filter(obs_type == "lifeExp",
+         year > 1980 & year <= 2007) %>% 
+  group_by(continent, year) %>% 
+  summarise(new_mean = mean(obs_values))
+
+ggplot(bycont, aes(x=year, y=new_mean, color=continent))+geom_line()
+
+
+
+ggplot(data=meanlife, aes(x=year, y=obs_values, color=country))+geom_line()+
+  labs(title = "Life Expectancy",
+       x="Year",
+       y="Age (years")+
+  theme_bw()
+```
+
+## spread
+```{r}
+head(gap_long)
+gap_normal <- gap_long %>% 
+  spread(key = obs_type,
+         value = obs_values)
+
+head(gap_normal)
+```
+
+
+
+ad_csv("https://raw.githubusercontent.com/OHI-Science/data-science-training/master/data/co2.csv")
+
