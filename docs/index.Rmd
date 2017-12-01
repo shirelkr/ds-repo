@@ -116,6 +116,56 @@ gapminder %>% head()
 gapminder %>%
   filter(country == "Sweden") %>%
   summarise(mean(lifeExp))
+```
+## select by columns
+```{r columns}
+select(gapminder, year, lifeExp)
+gapminder %>% 
+  select(year, lifeExp) %>% 
+  tail()
 
+
+gapminder %>% 
+  filter(country == "Cambodia") %>% 
+  select(-continent, -lifeExp)
+
+##a few things about filter
+gapminder %>% 
+  filter(country == "Mexico", 
+         year == 2002)
+
+
+gapminder %>% 
+  mutate(gdp = pop*gdpPercap) %>% 
+  mutate(index = 1:nrow(gapminder)) %>% 
+  tail()
+
+gapminder %>% 
+  filter(country %in% c("Egypt", "Vietnam"))
 
 #read_csv from the readr package of the tinyverse, it's not the read.csv which is part of base r
+
+gapminder %>% 
+  filter(country %in% c("Egypt", "Vietnam")) %>% 
+  mutate(max_gdpPercap = max(gdpPercap)) 
+  
+## group_by so that we can get two maxes
+
+gapminder %>% 
+  filter(country %in% c("Egypt", "Vietnam")) %>% 
+  group_by(country) %>% 
+  summarise(max_gdpPercap = max(gdpPercap))
+
+gapminder %>% 
+  group_by(country) %>% 
+  summarise
+# keep year associated
+
+gapminder %>% 
+  group_by(country) %>% 
+  mutate(max_gdpPercap = max(gdpPercap)) %>% 
+  filter(max_gdpPercap == gdpPercap) %>% 
+  arrange(max_gdpPercap)
+
+
+```
